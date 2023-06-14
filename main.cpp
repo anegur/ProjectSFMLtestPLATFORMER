@@ -204,9 +204,18 @@ int main()
 				if (CurrentFrame > 3) CurrentFrame -= 3; //проходимся по кадрам с первого по третий включительно. если пришли к третьему кадру - откидываемся назад.
 				p.sprite.setTextureRect(IntRect(96 * int(CurrentFrame), 0, 96, 96)); //проходимся по координатам Х. получается 96,96*2,96*3 и опять 96
 			}
+			// getplayercoordinateforview(p.getplayercoordinateX(), p.getplayercoordinateY()); //уравление камерой
 		}
 
-		getplayercoordinateforview(p.getplayercoordinateX(), p.getplayercoordinateY()); //уравление камерой
+		sf::Vector2i localPosition = Mouse::getPosition(window);
+
+		std::cout << "locPos" << localPosition.x << std::endl;
+
+		if (localPosition.x < 3) { view.move(-0.2 * time, 0); }//если слева - влево
+		if (localPosition.x > window.getSize().x - 3) { view.move(0.2 * time, 0); }//правый край-вправо
+		if (localPosition.y > window.getSize().y - 3) { view.move(0, 0.2 * time); }//нижний край - вниз
+		if (localPosition.y < 3) { view.move(0, -0.2 * time); }//верхний край - вверх
+		
 		p.update(time);
 
 		window.setView(view); //установка камеры на игрока
